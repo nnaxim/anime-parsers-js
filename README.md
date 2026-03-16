@@ -1,12 +1,16 @@
 # anime-parsers-js
 
-JavaScript (ES Module) порт Python библиотеки [AnimeParsers](https://github.com/YaNesyTortiK/AnimeParsers) от [@YaNesyTortiK](https://github.com/YaNesyTortiK).
+JavaScript порт Python библиотеки [AnimeParsers](https://github.com/YaNesyTortiK/AnimeParsers) от [@YaNesyTortiK](https://github.com/YaNesyTortiK).
 
 Огромное спасибо автору оригинальной библиотеки за проделанную работу
 
 ---
 
 ## Установка
+
+```bash
+git clone https://github.com/nnaxim/anime-parsers-js.git
+```
 
 ```bash
 npm install axios cheerio
@@ -57,19 +61,19 @@ const results = await parser.search('Наруто')
 
 ```js
 // id_type: 'shikimori' | 'kinopoisk' | 'imdb'
-const results = await parser.searchById('20', 'shikimori')
+const results = await parser.searchById('z20', 'shikimori')
 ```
 
 ### Информация об аниме (переводы и количество серий)
 
 ```js
-const info = await parser.getInfo('20', 'shikimori')
+const info = await parser.getInfo('z20', 'shikimori')
 // { series_count: 220, translations: [{ id, type, name }] }
 
-const count = await parser.seriesCount('20', 'shikimori')
+const count = await parser.seriesCount('z20', 'shikimori')
 // 220
 
-const translations = await parser.translations('20', 'shikimori')
+const translations = await parser.translations('z20', 'shikimori')
 // [{ id: '735', type: 'Озвучка', name: '2x2 (220 эп.)' }, ...]
 ```
 
