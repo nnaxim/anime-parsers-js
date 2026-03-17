@@ -9,11 +9,13 @@ JavaScript порт Python библиотеки [AnimeParsers](https://github.co
 ## Установка
 
 ```bash
-git clone https://github.com/nnaxim/anime-parsers-js.git
+npm install anime-parsers
 ```
 
-```bash
-npm install axios cheerio
+```js
+const { KodikParser } = require("anime-parsers");
+или
+import { KodikParser } from "anime-parsers";
 ```
 
 ---
