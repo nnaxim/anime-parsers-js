@@ -23,6 +23,9 @@ import { KodikParser } from "anime-parsers-js";
 
 ```bash
 git clone https://github.com/nnaxim/anime-parsers-js.git
+```
+
+```bash
 npm install cheerio axios
 ```
 
