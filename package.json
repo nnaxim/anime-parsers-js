@@ -1,6 +1,6 @@
 {
   "name": "anime-parsers",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "JavaScript port of Python AnimeParsers library for parsing anime",
   "main": "src/index.js",
   "scripts": {
