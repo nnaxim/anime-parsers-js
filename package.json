@@ -1,5 +1,5 @@
 {
-  "name": "anime-parsers",
+  "name": "anime-parsers-js",
   "version": "1.0.7",
   "description": "JavaScript port of Python AnimeParsers library for parsing anime",
   "main": "src/index.js",

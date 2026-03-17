@@ -12,6 +12,7 @@ JavaScript порт Python библиотеки [AnimeParsers](https://github.co
 npm install anime-parsers
 ```
 
+## Импорт
 ```js
 const { KodikParser } = require("anime-parsers");
 или
@@ -77,7 +78,7 @@ await parser.getM3u8PlaylistLink('shikimori_id из таблицы выше', "s
 ### Инициализация
 
 ```js
-import { KodikParser } from './src/parsers/kodik/KodikParser.js'
+import { KodikParser } from "anime-parsers";
 
 const token = await KodikParser.getToken()
 const parser = new KodikParser(token)
