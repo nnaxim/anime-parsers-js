@@ -32,6 +32,46 @@ npm install axios cheerio
 
 ## KodikParser
 
+### Важно
+
+На данный момент метод `getToken()` не подходит для использования с методами:
+
+- `baseSearch`
+- `baseSearchById`
+- `getList`
+- `search`
+
+Получение токена через этот способ нестабильно
+Рекомендуется использовать собственный токен, полученный напрямую от Kodik
+
+Подробнее:
+https://github.com/YaNesyTortiK/AnimeParsers/issues/25
+
+---
+
+### Альтернатива
+
+Можно использовать готовую базу аниме (~8000 тайтлов):
+https://github.com/nnaxim/anime-table
+
+В таблице есть поле `shikimori_id`, с помощью которого можно:
+
+- получать ссылки на плеер через Kodik
+- получать список озвучек
+- парсить серии
+
+Это позволяет работать без поиска через API и обходить ограничения с токеном
+
+Пример использования
+```js
+const token = await KodikParser.getToken()
+
+const parser = new KodikParser(token)
+
+await parser.getM3u8PlaylistLink('shikimori_id из таблицы выше', "shikimori", 1, "735", 480)
+// https://cloud.kodik-storage.com/.....
+```
+
 ### Инициализация
 
 ```js
