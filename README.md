@@ -9,14 +9,21 @@ JavaScript порт Python библиотеки [AnimeParsers](https://github.co
 ## Установка
 
 ```bash
-npm install anime-parsers
+npm install anime-parsers-js
 ```
 
 ## Импорт
 ```js
-const { KodikParser } = require("anime-parsers");
+const { KodikParser } = require("anime-parsers-js");
 или
-import { KodikParser } from "anime-parsers";
+import { KodikParser } from "anime-parsers-js";
+```
+
+## Для разработки
+
+```bash
+git clone https://github.com/nnaxim/anime-parsers-js.git
+npm install cheerio axios
 ```
 
 ---
@@ -78,7 +85,7 @@ await parser.getM3u8PlaylistLink('shikimori_id из таблицы выше', "s
 ### Инициализация
 
 ```js
-import { KodikParser } from "anime-parsers";
+import { KodikParser } from "anime-parsers-js";
 
 const token = await KodikParser.getToken()
 const parser = new KodikParser(token)
