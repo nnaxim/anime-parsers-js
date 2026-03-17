@@ -1,10 +1,16 @@
 {
   "name": "anime-parsers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript port of Python AnimeParsers library for parsing anime",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.js"
   },
   "keywords": [
     "anime",
@@ -15,7 +21,7 @@
     "anime-parser"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.13.6",
     "cheerio": "^1.2.0"
