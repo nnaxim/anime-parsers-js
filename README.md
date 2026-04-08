@@ -4,6 +4,13 @@ JavaScript порт Python библиотеки [AnimeParsers](https://github.co
 
 ---
 
+# Быстрая навигация
+
+- [KodikParser](#kodikparser)
+- [Shikimori](#shikimori)
+
+---
+
 ## Установка
 
 ```bash
@@ -27,17 +34,6 @@ git clone https://github.com/nnaxim/anime-parsers-js.git
 cd anime-parsers-js
 npm install
 ```
-
----
-
-## Что реализовано
-
-- [x] `KodikParser` - парсер плеера Kodik
-- [x] `Shikimori` - парсер Shikimori
-
-## TODO
-
-- [ ] `AniboomParser` - парсер AniBoom
 
 ---
 
