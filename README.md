@@ -150,8 +150,8 @@ const results = await shiki.search('Наруто')
 ```js
 const info = await shiki.animeInfo('https://shikimori.one/animes/z20-naruto')
 // { title, original_title, picture, type, episodes,
-//    status, genres, themes, rating, score,
-//    description, studio, dates, next_episode, ... }
+// status, genres, themes, rating, score,
+// description, studio, dates, next_episode, ... }
 ```
 
 #### Дополнительная информация
@@ -199,8 +199,3 @@ const info = await shiki.deepAnimeInfo('20')
 ```
 
 ---
-
-## Оригинальная библиотека
-
-- Репозиторий: [github.com/YaNesyTortiK/AnimeParsers](https://github.com/YaNesyTortiK/AnimeParsers)
-- Автор: [@YaNesyTortiK](https://github.com/YaNesyTortiK)
