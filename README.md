@@ -52,8 +52,6 @@ const token = await KodikParser.getToken()
 const parser = new KodikParser(token)
 ```
 
-### Методы
-
 #### Получить токен
 ```js
 const token = await KodikParser.getToken()
@@ -64,31 +62,31 @@ const token = await KodikParser.getToken()
 const results = await parser.search('Наруто')
 // Возвращает массив объектов:
 // [{ title, title_orig, other_title, type, year,
-//    screenshots, shikimori_id, kinopoisk_id, imdb_id,
-//    worldart_link, additional_data, material_data, link }]
+// screenshots, shikimori_id, kinopoisk_id, imdb_id,
+// worldart_link, additional_data, material_data, link }]
 ```
 
 #### Поиск по ID
 ```js
 // idType: 'shikimori' | 'kinopoisk' | 'imdb'
-const results = await parser.searchById('20', 'shikimori')
+const results = await parser.searchById('z20', 'shikimori')
 ```
 
 #### Информация (переводы и количество серий)
 ```js
-const info = await parser.getInfo('20', 'shikimori')
+const info = await parser.getInfo('z20', 'shikimori')
 // { series_count: 220, translations: [{ id, type, name }] }
 
-const count = await parser.seriesCount('20', 'shikimori')
+const count = await parser.seriesCount('z20', 'shikimori')
 // 220
 
-const translations = await parser.translations('20', 'shikimori')
+const translations = await parser.translations('z20', 'shikimori')
 // [{ id: '735', type: 'Озвучка', name: '2x2 (220 эп.)' }, ...]
 ```
 
 #### Ссылка на видеофайл
 ```js
-const [url, maxQuality] = await parser.getLink('20', 'shikimori', 1, '609')
+const [url, maxQuality] = await parser.getLink('z20', 'shikimori', 1, '609')
 // url: '//cloud.kodik-storage.com/.../'
 // maxQuality: 720
 // Итоговая ссылка: 'https:' + url + '720.mp4'
@@ -100,11 +98,11 @@ const [url, maxQuality] = await parser.getLink('20', 'shikimori', 1, '609')
 #### M3U8 плейлист
 ```js
 // Ссылка на плейлист
-const link = await parser.getM3u8PlaylistLink('20', 'shikimori', 1, '609', 480)
+const link = await parser.getM3u8PlaylistLink('z20', 'shikimori', 1, '609', 480)
 // 'https://cloud.kodik-storage.com/.../480.mp4:hls:manifest.m3u8'
 
 // Содержимое плейлиста (с полными ссылками на сегменты)
-const playlist = await parser.getM3u8Playlist('20', 'shikimori', 1, '609', 480)
+const playlist = await parser.getM3u8Playlist('z20', 'shikimori', 1, '609', 480)
 ```
 
 #### Список аниме
@@ -140,8 +138,6 @@ const shiki = new Shikimori()
 // С зеркалом
 const shiki = new Shikimori({ mirror: 'shikimori.me' })
 ```
-
-### Методы
 
 #### Быстрый поиск
 ```js
