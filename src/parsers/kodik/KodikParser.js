@@ -26,7 +26,7 @@ export class KodikParser {
             ...parameters
         })
 
-        const url = `https://kodikapi.com/${endpoint}`
+        const url = `https://kodik-api.com/${endpoint}`
 
         let response
 
@@ -73,44 +73,77 @@ export class KodikParser {
         return data
     }
 
+    static _decryptToken(tkn) {
+        const half = Math.floor(tkn.length / 2)
+
+        const p1 = tkn.slice(0, half).split('').reverse().join('')
+        const p2 = tkn.slice(half).split('').reverse().join('')
+
+        const d1 = Buffer.from(p1, 'base64').toString('utf-8')
+        const d2 = Buffer.from(p2, 'base64').toString('utf-8')
+
+        return d2 + d1
+    }
+
+    async validateToken(token) {
+        try {
+            this.TOKEN = token
+
+            await this.baseSearch("Наруто", 1, false)
+            await this.baseSearchById("53446", "shikimori", 1, false)
+
+            return true
+        } catch (e) {
+            return false
+        }
+    }
+
     static async getToken() {
+        try {
+            const res = await axios.get(
+                "https://raw.githubusercontent.com/YaNesyTortiK/AnimeParsers/main/kdk_tokns/tokens.json"
+            )
 
-        const url = "https://kodik-add.com/add-players.min.js?v=2"
+            const tokens = res.data
+            const parser = new KodikParser()
 
-        let response
+            for (const t of tokens.stable) {
+                const token = this._decryptToken(t.tokn)
+
+                if (await parser.validateToken(token)) {
+                    return token
+                }
+
+                await new Promise(r => setTimeout(r, 1500))
+            }
+
+            for (const t of tokens.unstable) {
+                const token = this._decryptToken(t.tokn)
+
+                if (await parser.validateToken(token)) {
+                    return token
+                }
+
+                await new Promise(r => setTimeout(r, 1500))
+            }
+
+        } catch (e) {
+
+        }
 
         try {
-            response = await axios.get(url)
-        } catch (error) {
-            throw new ServiceError("Failed to request Kodik token")
+            const response = await axios.get("https://kodik-add.com/add-players.min.js?v=2")
+            const data = response.data
+
+            const start = data.indexOf("token=")
+            const tokenStart = start + 7
+            const tokenEnd = data.indexOf('"', tokenStart)
+
+            return data.substring(tokenStart, tokenEnd)
+
+        } catch (e) {
+            throw new ServiceError("Failed to get Kodik token")
         }
-
-        if (!response || !response.data) {
-            throw new ServiceError("Empty response from Kodik")
-        }
-
-        const data = response.data
-
-        const start = data.indexOf("token=")
-
-        if (start === -1) {
-            throw new UnexpectedBehavior("Token not found in Kodik script")
-        }
-
-        const tokenStart = start + 7
-        const tokenEnd = data.indexOf('"', tokenStart)
-
-        if (tokenEnd === -1) {
-            throw new UnexpectedBehavior("Token parsing failed")
-        }
-
-        const token = data.substring(tokenStart, tokenEnd)
-
-        if (!token || token.length < 5) {
-            throw new UnexpectedBehavior("Invalid token received")
-        }
-
-        return token
     }
 
     async baseSearch(
@@ -318,12 +351,16 @@ export class KodikParser {
         return [this._prettifyData(results, onlyAnime), nextPage]
     }
 
-    _isSerial(iframeUrl) {
-        return iframeUrl[iframeUrl.indexOf('.info/') + 6] === 's'
+    _isSerial(url) {
+        const i = url.indexOf("kodikplayer.com/")
+        if (i === -1) return false
+        return url[i + "kodikplayer.com/".length] === "s"
     }
 
-    _isVideo(iframeUrl) {
-        return iframeUrl[iframeUrl.indexOf('.info/') + 6] === 'v'
+    _isVideo(url) {
+        const i = url.indexOf("kodikplayer.com/")
+        if (i === -1) return false
+        return url[i + "kodikplayer.com/".length] === "v"
     }
 
     _generateTranslationsDict(translationsDiv) {
@@ -400,11 +437,11 @@ export class KodikParser {
 
         let serv
         if (idType === 'shikimori') {
-            serv = `https://kodikapi.com/get-player?title=Player&hasPlayer=false&url=https%3A%2F%2Fkodikdb.com%2Ffind-player%3FshikimoriID%3D${id}&token=${this.TOKEN}&shikimoriID=${id}`
+            serv = `https://kodik-api.com/get-player?title=Player&hasPlayer=false&url=https%3A%2F%2Fkodikdb.com%2Ffind-player%3FshikimoriID%3D${id}&token=${this.TOKEN}&shikimoriID=${id}`
         } else if (idType === 'kinopoisk') {
-            serv = `https://kodikapi.com/get-player?title=Player&hasPlayer=false&url=https%3A%2F%2Fkodikdb.com%2Ffind-player%3FkinopoiskID%3D${id}&token=${this.TOKEN}&kinopoiskID=${id}`
+            serv = `https://kodik-api.com/get-player?title=Player&hasPlayer=false&url=https%3A%2F%2Fkodikdb.com%2Ffind-player%3FkinopoiskID%3D${id}&token=${this.TOKEN}&kinopoiskID=${id}`
         } else if (idType === 'imdb') {
-            serv = `https://kodikapi.com/get-player?title=Player&hasPlayer=false&url=https%3A%2F%2Fkodikdb.com%2Ffind-player%3FkinopoiskID%3D${id}&token=${this.TOKEN}&imdbID=${id}`
+            serv = `https://kodik-api.com/get-player?title=Player&hasPlayer=false&url=https%3A%2F%2Fkodikdb.com%2Ffind-player%3FkinopoiskID%3D${id}&token=${this.TOKEN}&imdbID=${id}`
         } else {
             throw new PostArgumentsError(`Unknown idType: ${idType}`)
         }
@@ -494,7 +531,7 @@ export class KodikParser {
     async _getPostLink(scriptUrl) {
         let response
         try {
-            response = await axios.get('https://kodik.info' + scriptUrl, {
+            response = await axios.get('https://kodikplayer.com' + scriptUrl, {
                 headers: {
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
                     "Accept": "*/*"
@@ -533,7 +570,7 @@ export class KodikParser {
         let response
         try {
             response = await axios.post(
-                'https://kodik.info' + postLink,
+                'https://kodikplayer.com' + postLink,
                 params.toString(),
                 {
                     headers: {
@@ -602,7 +639,7 @@ export class KodikParser {
                 }
             })
 
-            const url = `https://kodik.info/serial/${mediaId}/${mediaHash}/720p?min_age=16&first_url=false&season=1&episode=${seriaNum}`
+            const url = `https://kodikplayer.com/serial/${mediaId}/${mediaHash}/720p?min_age=16&first_url=false&season=1&episode=${seriaNum}`
             const r = await axios.get(url, {
                 headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36", "Accept": "*/*" }
             })
@@ -620,7 +657,7 @@ export class KodikParser {
                 }
             })
 
-            const url = `https://kodik.info/video/${mediaId}/${mediaHash}/720p?min_age=16&first_url=false&season=1&episode=0`
+            const url = `https://kodikplayer.com/video/${mediaId}/${mediaHash}/720p?min_age=16&first_url=false&season=1&episode=0`
             const r = await axios.get(url, {
                 headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36", "Accept": "*/*" }
             })
