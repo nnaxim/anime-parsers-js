@@ -1,54 +1,31 @@
-import axios from "axios"
+import { AnilibriaParser } from "./src/index.js";
 
-async function testAnilibria() {
-  try {
-    console.log("TART TEST")
+async function test() {
+    const parser = new AnilibriaParser();
 
-    const listRes = await axios.get(
-      "https://anilibria.top/api/v1/anime/releases/latest"
-    )
+    console.log("=== getLatestReleases ===");
+    const latest = await parser.getLatestReleases();
+    console.log("count:", latest.length);
+    console.log("first release name:", latest[0].name.main);
 
-    if (!listRes.data?.length) {
-      throw new Error("releases list empty")
-    }
+    const releaseId = latest[0].id;
 
-    console.log("LIST OK:", listRes.data.length)
+    console.log("\n=== getRelease ===");
+    const release = await parser.getRelease(releaseId);
+    console.log("name:", release.name.main);
+    console.log("episodes count:", release.episodes?.length ?? "нет эпизодов");
+    console.log("first episode ordinal:", release.episodes?.[0]?.ordinal);
+    console.log("first episode hls_720:", release.episodes?.[0]?.hls?.hls_720);
 
-    const releaseId = listRes.data[0].id
-    console.log("RELEASE ID:", releaseId)
+    const episodeId = release.episodes?.[0]?.id;
 
-    const releaseRes = await axios.get(
-      `https://anilibria.top/api/v1/anime/releases/${releaseId}`
-    )
+    console.log("\n=== getEpisode ===");
+    const episode = await parser.getEpisode(episodeId);
+    console.log("ordinal:", episode.ordinal);
+    console.log("hls_720:", episode.hls?.hls_720);
+    console.log("hls_1080:", episode.hls?.hls_1080);
 
-    const episodes = releaseRes.data?.episodes
-
-    if (!episodes?.length) {
-      throw new Error("no episodes")
-    }
-
-    console.log("RELEASE OK:", episodes.length)
-
-    const episodeId = episodes[0].id
-    console.log("EPISODE ID:", episodeId)
-
-    const streamRes = await axios.get(
-      `https://anilibria.top/api/v1/anime/releases/episodes/${episodeId}`
-    )
-
-    const stream = streamRes.data
-
-    if (!stream?.hls_720) {
-      throw new Error("no stream")
-    }
-
-    console.log("STREAM OK")
-    console.log("HLS 720:", stream.hls_720)
-
-    console.log("ALL TESTS PASSED")
-  } catch (err) {
-    console.error("TEST FAILED:", err.message)
-  }
+    console.log("\nALL OK");
 }
 
-testAnilibria()
+test().catch(console.error);

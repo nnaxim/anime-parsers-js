@@ -31,7 +31,7 @@
   "author": "nnaxim",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.13.6",
+    "axios": "^1.14.0",
     "cheerio": "^1.2.0"
   },
   "type": "module",

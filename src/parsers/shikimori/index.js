@@ -1,2 +1,2 @@
-export { Shikimori } from "./Shikimori.js";
+export { ShikimoriParser } from "./ShikimoriParser.js";
 
